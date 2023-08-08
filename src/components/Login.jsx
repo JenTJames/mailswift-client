@@ -44,7 +44,7 @@ const Login = () => {
     };
     const response = await authenticateUser("POST", "auth/login/", user);
     if (!response) return;
-    alert(response.data);
+    localStorage.setItem("token", response.data);
   };
 
   const redirectHandler = (to) => {
