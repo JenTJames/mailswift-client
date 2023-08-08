@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Typography } from "@mui/material";
+import { IconButton, InputAdornment, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AlternateEmailRoundedIcon from "@mui/icons-material/AlternateEmailRounded";
 import KeyRoundedIcon from "@mui/icons-material/KeyRounded";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import Input from "./Input";
 import Button from "./Button";
@@ -15,6 +17,7 @@ import Toast from "./Toast";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPasssword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -48,6 +51,10 @@ const Login = () => {
     navigate(to);
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword((currentState) => !currentState);
+  };
+
   return (
     <>
       {isAuthenticating && <Spinner />}
@@ -73,7 +80,7 @@ const Login = () => {
           </div>
           <form className="flex flex-col gap-3" onSubmit={loginHandler}>
             <Input
-              startIcon={<AlternateEmailRoundedIcon />}
+              startAdornment={<AlternateEmailRoundedIcon />}
               config={{
                 placeholder: "Email",
                 type: "text",
@@ -82,10 +89,21 @@ const Login = () => {
               }}
             />
             <Input
-              startIcon={<KeyRoundedIcon />}
+              startAdornment={<KeyRoundedIcon />}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              }
               config={{
                 placeholder: "Password",
-                type: "password",
+                type: showPassword ? "text" : "password",
                 value: password,
                 onChange: passwordChangeHandler,
               }}

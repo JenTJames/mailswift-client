@@ -167,7 +167,7 @@ const Register = () => {
           <form className="flex flex-col gap-3" onSubmit={registerHandler}>
             <InputRow>
               <Input
-                startIcon={<AccountCircleRoundedIcon />}
+                startAdornment={<AccountCircleRoundedIcon />}
                 config={{
                   placeholder: "Firstname",
                   type: "text",
@@ -179,7 +179,7 @@ const Register = () => {
                 }}
               />
               <Input
-                startIcon={<PersonPinCircleRoundedIcon />}
+                startAdornment={<PersonPinCircleRoundedIcon />}
                 config={{
                   placeholder: "Lastname",
                   type: "text",
@@ -192,7 +192,7 @@ const Register = () => {
               />
             </InputRow>
             <Input
-              startIcon={<AlternateEmailRoundedIcon />}
+              startAdornment={<AlternateEmailRoundedIcon />}
               config={{
                 placeholder: "Email",
                 type: "email",
@@ -205,7 +205,7 @@ const Register = () => {
             />
             <InputRow>
               <Input
-                startIcon={<KeyRoundedIcon />}
+                startAdornment={<KeyRoundedIcon />}
                 config={{
                   placeholder: "Password",
                   type: "password",
@@ -217,7 +217,7 @@ const Register = () => {
                 }}
               />
               <Input
-                startIcon={<PasswordRoundedIcon />}
+                startAdornment={<PasswordRoundedIcon />}
                 config={{
                   placeholder: "Confirm Password",
                   type: "password",
