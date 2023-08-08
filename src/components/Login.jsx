@@ -45,6 +45,7 @@ const Login = () => {
     const response = await authenticateUser("POST", "auth/login/", user);
     if (!response) return;
     localStorage.setItem("token", response.data);
+    redirectHandler("/inbox");
   };
 
   const redirectHandler = (to) => {
