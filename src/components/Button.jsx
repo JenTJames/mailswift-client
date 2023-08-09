@@ -6,6 +6,8 @@ const Button = ({
   children,
   type = "button",
   onClick,
+  startIcon,
+  size = "small",
 }) => {
   return (
     <MuiButton
@@ -17,6 +19,8 @@ const Button = ({
       disableElevation
       color={color || "brand"}
       variant={variant}
+      startIcon={startIcon}
+      size={size}
     >
       {children}
     </MuiButton>

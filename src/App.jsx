@@ -10,6 +10,8 @@ import Page from "./components/Page";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import theme from "./utils/theme-config";
+import InboxPage from "./pages/InboxPage";
+import Restricted from "./components/Restricted";
 
 function App() {
   return (
@@ -18,6 +20,10 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/inbox"
+            element={<Restricted component={<InboxPage />} />}
+          />
 
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="*" element={<Navigate to="/login" replace />} />

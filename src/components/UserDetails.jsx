@@ -26,9 +26,9 @@ const UserDetails = () => {
         <AccountCircleIcon sx={{ fontSize: 55 }} />
       </Avatar>
       <div className="flex flex-col">
-        <Typography variant="h5">{details.name}</Typography>
+        <Typography variant="h5">{details?.name}</Typography>
         <Typography color="GrayText" variant="subtitle1">
-          {details.email}
+          {details?.email}
         </Typography>
       </div>
     </div>

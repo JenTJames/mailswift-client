@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Sidebar from "./Sidebar";
+
 const Restricted = ({ component }) => {
   const navigate = useNavigate();
 
@@ -10,7 +12,10 @@ const Restricted = ({ component }) => {
   }, [navigate]);
 
   return (
-    <div className="w-full h-full bg-slate-100 flex flex-col">{component}</div>
+    <div className="w-full h-full bg-slate-100 flex">
+      <Sidebar />
+      {component}
+    </div>
   );
 };
 
