@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
+import EnvelopeContainer from "./EnvelopeContainer";
 
 const Restricted = ({ component }) => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Restricted = ({ component }) => {
   return (
     <div className="w-full h-full bg-slate-100 flex">
       <Sidebar />
+      <EnvelopeContainer />
       {component}
     </div>
   );
