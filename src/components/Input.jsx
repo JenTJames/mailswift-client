@@ -1,7 +1,12 @@
 import { InputAdornment, TextField } from "@mui/material";
 import React from "react";
 
-const Input = ({ config, startAdornment, endAdornment }) => {
+const Input = ({
+  config,
+  startAdornment,
+  endAdornment,
+  variant = "outlined",
+}) => {
   return (
     <TextField
       InputProps={{
@@ -12,7 +17,7 @@ const Input = ({ config, startAdornment, endAdornment }) => {
           <InputAdornment position="end">{endAdornment}</InputAdornment>
         ) : null,
       }}
-      variant="outlined"
+      variant={variant}
       color="brandLight"
       {...config}
     />
