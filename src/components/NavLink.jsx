@@ -6,8 +6,8 @@ const NavLink = ({ children, icon, to }) => {
       to={to}
       className={({ isActive }) => {
         return isActive
-          ? "text-emerald-500 p-2 hover:bg-emerald-100 hover:text-emerald-500 font-bold"
-          : "text-slate-400 p-2 hover:bg-emerald-100 hover:text-emerald-500 font";
+          ? "text-emerald-500 p-2 hover:bg-emerald-200 hover:text-emerald-500 font-bold rounded-md"
+          : "text-slate-400 p-2 hover:bg-emerald-200 hover:text-emerald-500 rounded-md";
       }}
     >
       <div className="flex items-center gap-3">

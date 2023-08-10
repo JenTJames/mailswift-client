@@ -11,7 +11,7 @@ import NavLink from "./NavLink";
 const Sidebar = () => {
   return (
     <div className="w-[400px] bg-slate-200 h-full flex flex-col justify-between p-5">
-      <div className="flex flex-col  gap-10">
+      <div className="flex flex-col gap-10">
         <UserDetails />
         <Button
           size="large"
@@ -21,7 +21,7 @@ const Sidebar = () => {
           Compose
         </Button>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-1 flex-col gap-2 justify-center">
         <NavLink icon={<InboxRoundedIcon fontSize="large" />} to="/inbox">
           Inbox
         </NavLink>
