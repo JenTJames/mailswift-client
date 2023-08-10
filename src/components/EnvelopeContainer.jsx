@@ -9,6 +9,7 @@ import Input from "./Input";
 import Envelope from "./Envelope";
 import Spinner from "./Spinner";
 import Toast from "./Toast";
+import { Typography } from "@mui/material";
 
 const EnvelopeContainer = () => {
   const [mails, setMails] = useState([]);
@@ -24,7 +25,11 @@ const EnvelopeContainer = () => {
 
   useEffect(() => {
     const getMails = async () => {
-      const endpoint = "mails/" + location.pathname.split("/")[1] + "/users/2";
+      const token = localStorage.getItem("token");
+      const payload = token.split(".")[1];
+      const { id } = JSON.parse(atob(payload));
+      const endpoint =
+        "mails/" + location.pathname.split("/")[1] + "/users/" + id;
       const response = await fetchMails("GET", endpoint);
       if (!response) return;
       setMails(response.data);
@@ -49,11 +54,19 @@ const EnvelopeContainer = () => {
             placeholder: "Search",
           }}
         />
-        <div className="flex flex-col">
-          {mails.map((mail) => (
-            <Envelope mail={mail} key={mail.id} />
-          ))}
-        </div>
+        {mails.length > 0 ? (
+          <div className="flex flex-col">
+            {mails.map((mail) => (
+              <Envelope mail={mail} key={mail.id} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col flex-1 justify-center items-center">
+            <Typography variant="subtitle1" className="text-slate-400">
+              You don't have any mail
+            </Typography>
+          </div>
+        )}
       </div>
     </>
   );

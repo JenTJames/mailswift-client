@@ -15,7 +15,7 @@ const useHttp = () => {
       });
       return response.data;
     } catch (error) {
-      if (error.response.status === 500) {
+      if (error.response?.status === 500) {
         setError({
           isError: true,
           error: "The server went on a coffee break. Will be back soon!",
@@ -24,8 +24,8 @@ const useHttp = () => {
         setError({
           isError: true,
           error:
-            error.response.data.message ||
-            error.response.data ||
+            error.response?.data.message ||
+            error.response?.data ||
             "Something went wrong!",
         });
       }

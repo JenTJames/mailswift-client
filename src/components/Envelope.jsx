@@ -1,8 +1,22 @@
 import { Typography } from "@mui/material";
+import { DateTime } from "luxon";
 
 import Avatar from "./Avatar";
 
 const Envelope = ({ mail }) => {
+  const getDate = (timestamp) => {
+    const date = DateTime.fromISO(timestamp);
+    const today = DateTime.local().startOf("day");
+    const yesterday = today.minus({ days: 1 });
+
+    if (date.hasSame(today, "day")) {
+      return date.toFormat("hh:mm a");
+    } else if (date.hasSame(yesterday, "day")) {
+      return "Yesterday";
+    } else {
+      return date.toFormat("MMM dd, yyyy");
+    }
+  };
   return (
     <div className="flex items-center w-full gap-3 hover:bg-emerald-100 cursor-pointer p-2">
       <Avatar variant="circle" bgColor="orange" />
@@ -12,7 +26,7 @@ const Envelope = ({ mail }) => {
             {mail.sender.name}
           </Typography>
           <Typography variant="p" className="text-slate-500">
-            10:30pm
+            {getDate(mail.sentAt)}
           </Typography>
         </div>
         <Typography variant="h6" className="text-slate-700">
