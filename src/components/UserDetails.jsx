@@ -8,13 +8,15 @@ const UserDetails = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const payload = token.split(".")[1];
-    const { firstname, lastname, email, id } = JSON.parse(atob(payload));
-    setDetails({
-      name: firstname + " " + lastname,
-      email: email,
-      id: id,
-    });
+    if (token) {
+      const payload = token.split(".")[1];
+      const { firstname, lastname, email, id } = JSON.parse(atob(payload));
+      setDetails({
+        name: firstname + " " + lastname,
+        email: email,
+        id: id,
+      });
+    }
   }, []);
 
   return (
