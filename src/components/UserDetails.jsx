@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Typography } from "@mui/material";
+
+import Avatar from "./Avatar";
 
 const UserDetails = () => {
   const [details, setDetails] = useState(null);
@@ -21,12 +21,7 @@ const UserDetails = () => {
 
   return (
     <div className="bg-slate-50 rounded-md p-3 flex items-center gap-4">
-      <Avatar
-        sx={{ bgcolor: "#22c55e", width: 65, height: 65 }}
-        variant="rounded"
-      >
-        <AccountCircleIcon sx={{ fontSize: 55 }} />
-      </Avatar>
+      <Avatar />
       <div className="flex flex-col">
         <Typography variant="h5">{details?.name}</Typography>
         <Typography color="GrayText" variant="subtitle1">
