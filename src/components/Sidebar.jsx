@@ -3,12 +3,16 @@ import InboxRoundedIcon from "@mui/icons-material/InboxRounded";
 import ForwardToInboxRoundedIcon from "@mui/icons-material/ForwardToInboxRounded";
 import GppBadRoundedIcon from "@mui/icons-material/GppBadRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 import UserDetails from "./UserDetails";
 import Button from "./Button";
 import NavLink from "./NavLink";
 
 const Sidebar = () => {
+  const logoutHandler = () => {
+    localStorage.clear();
+  };
   return (
     <div className="w-[400px] bg-slate-200 h-full flex flex-col justify-between p-5">
       <div className="flex flex-col gap-10">
@@ -36,6 +40,13 @@ const Sidebar = () => {
         </NavLink>
         <NavLink icon={<DeleteRoundedIcon fontSize="large" />} to="/trash">
           Trash
+        </NavLink>
+        <NavLink
+          onClick={logoutHandler}
+          icon={<LogoutRoundedIcon fontSize="large" />}
+          to="/login"
+        >
+          Logout
         </NavLink>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import { NavLink as RouterNavLink } from "react-router-dom";
 
-const NavLink = ({ children, icon, to }) => {
+const NavLink = ({ children, icon, to, onClick }) => {
   return (
     <RouterNavLink
+      onClick={onClick}
       to={to}
       className={({ isActive }) => {
         return isActive
