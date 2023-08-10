@@ -1,25 +1,20 @@
-import {
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { NavLink as RouterNavLink } from "react-router-dom";
 
-const NavLink = ({ label, icon }) => {
+const NavLink = ({ children, icon, to }) => {
   return (
-    <ListItem
-      sx={{
-        ".MuiListItemButton-root:hover": {
-          background: "#22C55E55",
-          color: "green",
-        },
+    <RouterNavLink
+      to={to}
+      className={({ isActive }) => {
+        return isActive
+          ? "text-emerald-500 p-2 hover:bg-emerald-100 hover:text-emerald-500 font-bold"
+          : "text-slate-400 p-2 hover:bg-emerald-100 hover:text-emerald-500 font";
       }}
     >
-      <ListItemButton disableRipple>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={label} />
-      </ListItemButton>
-    </ListItem>
+      <div className="flex items-center gap-3">
+        {icon}
+        <p className="text-lg">{children}</p>
+      </div>
+    </RouterNavLink>
   );
 };
 
