@@ -7,6 +7,7 @@ const Button = ({
   type = "button",
   onClick,
   startIcon,
+  endIcon,
   size = "small",
 }) => {
   return (
@@ -20,6 +21,7 @@ const Button = ({
       color={color || "brand"}
       variant={variant}
       startIcon={startIcon}
+      endIcon={endIcon}
       size={size}
     >
       {children}
