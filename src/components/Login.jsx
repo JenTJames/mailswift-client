@@ -71,9 +71,9 @@ const Login = () => {
   return (
     <>
       {isAuthenticating && <Spinner />}
-      {authenticateUserError?.isError && (
+      {authenticateUserError?.isVisible && (
         <Toast updateError={resetAuthenticateUserError}>
-          {authenticateUserError?.error}
+          {authenticateUserError?.message}
         </Toast>
       )}
       <div className="w-1/4 bg-white rounded-md">

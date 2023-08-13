@@ -144,9 +144,9 @@ const Register = () => {
   return (
     <>
       {isCreatingUser && <Spinner />}
-      {createUserError?.isError && (
+      {createUserError?.isVisible && (
         <Toast updateError={resetCreateUserError}>
-          {createUserError?.error}
+          {createUserError?.message}
         </Toast>
       )}
       <div className="w-1/4 bg-white rounded-md">

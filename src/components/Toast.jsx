@@ -8,8 +8,8 @@ const Toast = ({ variant = "error", children, updateError = null }) => {
     const timerId = setTimeout(() => {
       if (updateError) {
         updateError({
-          isError: false,
-          error: null,
+          isVisible: false,
+          message: null,
         });
       }
       setShowToast(false);
@@ -21,8 +21,8 @@ const Toast = ({ variant = "error", children, updateError = null }) => {
   const closeHandler = () => {
     if (updateError) {
       updateError({
-        isError: false,
-        error: null,
+        isVisible: false,
+        message: null,
       });
     }
     setShowToast(false);

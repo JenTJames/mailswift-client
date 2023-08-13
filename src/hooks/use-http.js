@@ -17,13 +17,13 @@ const useHttp = () => {
     } catch (error) {
       if (error.response?.status === 500) {
         setError({
-          isError: true,
-          error: "The server went on a coffee break. Will be back soon!",
+          isVisbile: true,
+          message: "The server went on a coffee break. Will be back soon!",
         });
       } else {
         setError({
-          isError: true,
-          error:
+          isVisible: true,
+          message:
             error.response?.data.message ||
             error.response?.data ||
             "Something went wrong!",
