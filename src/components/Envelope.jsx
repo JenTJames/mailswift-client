@@ -25,7 +25,7 @@ const Envelope = ({ mail }) => {
   };
 
   return (
-    <div className="flex items-center w-full gap-3 hover:bg-emerald-100 cursor-pointer p-2">
+    <div className="flex items-center w-full border rounded-md gap-3 hover:bg-emerald-100 cursor-pointer p-2">
       <Avatar variant="circle" bgColor="orange" />
       <div className="flex flex-col w-full">
         <div className="w-full flex justify-between">
