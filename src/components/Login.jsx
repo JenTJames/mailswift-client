@@ -6,7 +6,6 @@ import KeyRoundedIcon from "@mui/icons-material/KeyRounded";
 import LockRoundedIcon from "@mui/icons-material/LockRounded";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { io } from "socket.io-client";
 
 import Input from "./Input";
 import Button from "./Button";
@@ -50,11 +49,6 @@ const Login = () => {
     //Establish socket connection
     const payload = response.data.split(".")[1];
     const { id } = JSON.parse(atob(payload));
-    const socket = io("http://localhost:3001", {
-      query: {
-        userId: id,
-      },
-    });
     if (!socket.connected)
       console.error("Could not establish socket connection!");
     redirectHandler("/inbox");
