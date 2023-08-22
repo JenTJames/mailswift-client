@@ -17,6 +17,13 @@ const Envelope = ({ mail }) => {
       return date.toFormat("MMM dd, yyyy");
     }
   };
+
+  const truncateText = (text) => {
+    const maxLength = 67;
+    if (!text || text.length <= maxLength) return text;
+    return text.slice(0, maxLength - 3) + "...";
+  };
+
   return (
     <div className="flex items-center w-full gap-3 hover:bg-emerald-100 cursor-pointer p-2">
       <Avatar variant="circle" bgColor="orange" />
@@ -33,7 +40,7 @@ const Envelope = ({ mail }) => {
           {mail.subject}
         </Typography>
         <Typography variant="p" className="text-slate-500">
-          {mail.body}
+          {truncateText(mail.body)}
         </Typography>
       </div>
     </div>

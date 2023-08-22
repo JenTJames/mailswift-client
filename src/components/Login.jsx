@@ -45,12 +45,6 @@ const Login = () => {
     const response = await authenticateUser("POST", "auth/login/", user);
     if (!response) return;
     localStorage.setItem("token", response.data);
-
-    //Establish socket connection
-    const payload = response.data.split(".")[1];
-    const { id } = JSON.parse(atob(payload));
-    if (!socket.connected)
-      console.error("Could not establish socket connection!");
     redirectHandler("/inbox");
   };
 
