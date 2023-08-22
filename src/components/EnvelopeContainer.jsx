@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 
@@ -7,7 +7,6 @@ import useHttp from "../hooks/use-http";
 import EnvelopeContainerDetails from "./EnvelopeContainerDetails";
 import Input from "./Input";
 import Envelope from "./Envelope";
-import Spinner from "./Spinner";
 import Toast from "./Toast";
 import { Typography } from "@mui/material";
 
@@ -23,30 +22,35 @@ const EnvelopeContainer = () => {
     resetError: resetFetchMailsError,
   } = useHttp();
 
-  useEffect(() => {
-    const getMails = async () => {
-      const token = localStorage.getItem("token");
-      const payload = token.split(".")[1];
-      const { id } = JSON.parse(atob(payload));
-      const endpoint =
-        "mails/" + location.pathname.split("/")[1] + "/users/" + id;
-      const response = await fetchMails("GET", endpoint);
-      if (!response) return;
-      setMails(response.data);
-    };
-    getMails();
+  const getMails = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    const payload = token.split(".")[1];
+    const { id } = JSON.parse(atob(payload));
+    const endpoint =
+      "mails/" + location.pathname.split("/")[1] + "/users/" + id;
+    const response = await fetchMails("GET", endpoint);
+    if (!response) return;
+    setMails(response.data);
   }, [location, fetchMails]);
+
+  useEffect(() => {
+    getMails();
+  }, [getMails]);
 
   return (
     <>
-      {isFetchingMails && <Spinner />}
       {fetchMailsError?.isError && (
         <Toast variant="error" updateError={resetFetchMailsError}>
           {fetchMailsError?.error}
         </Toast>
       )}
       <div className="w-[400px] border h-full flex flex-col gap-3 p-5">
-        <EnvelopeContainerDetails />
+        <EnvelopeContainerDetails
+          totalMessages={mails.length}
+          totalUnread={mails.length}
+          refreshInbox={getMails}
+          animateReloadIcon={isFetchingMails}
+        />
         <Input
           variant="filled"
           startAdornment={<SearchRoundedIcon />}
