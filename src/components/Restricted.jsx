@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
 import EnvelopeContainer from "./EnvelopeContainer";
+import InboxContextProvider from "./Providers/InboxContextProvider";
 
 const Restricted = ({ component }) => {
   const navigate = useNavigate();
@@ -13,11 +14,13 @@ const Restricted = ({ component }) => {
   }, [navigate]);
 
   return (
-    <div className="w-full h-full bg-slate-100 flex">
-      <Sidebar />
-      <EnvelopeContainer />
-      {component}
-    </div>
+    <InboxContextProvider>
+      <div className="w-full h-full bg-slate-100 flex">
+        <Sidebar />
+        <EnvelopeContainer />
+        {component}
+      </div>
+    </InboxContextProvider>
   );
 };
 

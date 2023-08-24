@@ -1,9 +1,14 @@
+import { useContext } from "react";
 import { Typography } from "@mui/material";
 import { DateTime } from "luxon";
+
+import InboxContext from "../contexts/inbox-context";
 
 import Avatar from "./Avatar";
 
 const Envelope = ({ mail }) => {
+  const inboxContext = useContext(InboxContext);
+
   const getDate = (timestamp) => {
     const date = DateTime.fromISO(timestamp);
     const today = DateTime.local().startOf("day");
@@ -24,8 +29,15 @@ const Envelope = ({ mail }) => {
     return text.slice(0, maxLength - 3) + "...";
   };
 
+  const loadMailHandler = () => {
+    inboxContext.setMailID(mail.id);
+  };
+
   return (
-    <div className="flex items-center w-full border rounded-md gap-3 hover:bg-emerald-100 cursor-pointer p-2">
+    <div
+      className="flex items-center w-full border rounded-md gap-3 hover:bg-emerald-100 cursor-pointer p-2"
+      onClick={loadMailHandler}
+    >
       <Avatar variant="circle" bgColor="orange" />
       <div className="flex flex-col w-full">
         <div className="w-full flex justify-between">
