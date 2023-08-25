@@ -1,5 +1,7 @@
-import { useContext } from "react";
-import { Typography } from "@mui/material";
+import { useContext, useState } from "react";
+import { IconButton, Tooltip, Typography } from "@mui/material";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import OutlinedFlagTwoToneIcon from "@mui/icons-material/OutlinedFlagTwoTone";
 import { DateTime } from "luxon";
 
 import InboxContext from "../contexts/inbox-context";
@@ -8,6 +10,8 @@ import Avatar from "./Avatar";
 
 const Envelope = ({ mail }) => {
   const inboxContext = useContext(InboxContext);
+  const [isDeleteHovered, setIsDeleteHovered] = useState(false);
+  const [isSpamHovered, setIsSpamHovered] = useState(false);
 
   const getDate = (timestamp) => {
     const date = DateTime.fromISO(timestamp);
@@ -33,6 +37,10 @@ const Envelope = ({ mail }) => {
     inboxContext.setMailID(mail.id);
   };
 
+  const markAsSpamHandler = () => {};
+
+  const moveToTrashHandler = () => {};
+
   return (
     <div
       className="flex items-center w-full border rounded-md gap-3 hover:bg-emerald-100 cursor-pointer p-2"
@@ -54,6 +62,30 @@ const Envelope = ({ mail }) => {
         <Typography variant="p" className="text-slate-500">
           {truncateText(mail.body)}
         </Typography>
+        <div className="flex justify-end">
+          <Tooltip title="Move to Trash">
+            <IconButton
+              onClick={moveToTrashHandler}
+              onMouseEnter={() => setIsDeleteHovered(true)}
+              onMouseLeave={() => setIsDeleteHovered(false)}
+            >
+              <DeleteOutlineRoundedIcon
+                color={isDeleteHovered ? "error" : "disabled"}
+              />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Mark as Spam">
+            <IconButton
+              onClick={markAsSpamHandler}
+              onMouseEnter={() => setIsSpamHovered(true)}
+              onMouseLeave={() => setIsSpamHovered(false)}
+            >
+              <OutlinedFlagTwoToneIcon
+                color={isSpamHovered ? "warning" : "disabled"}
+              />
+            </IconButton>
+          </Tooltip>
+        </div>
       </div>
     </div>
   );

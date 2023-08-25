@@ -1,11 +1,11 @@
 import { useContext, useState, useEffect } from "react";
+import { Typography } from "@mui/material";
 
 import InboxContext from "../contexts/inbox-context";
 import useHttp from "../hooks/use-http";
 
 import Spinner from "../components/Spinner";
 import Toast from "../components/Toast";
-import { Typography } from "@mui/material";
 
 const InboxPage = () => {
   const [mail, setMail] = useState(null);
