@@ -44,7 +44,7 @@ const EnvelopeContainer = () => {
           {fetchMailsError?.error}
         </Toast>
       )}
-      <div className="w-[400px] border h-full flex flex-col gap-3 p-5">
+      <div className="w-6/12 border h-full flex flex-col gap-3 p-5">
         <EnvelopeContainerDetails
           totalMessages={mails.length}
           totalUnread={mails.length}
