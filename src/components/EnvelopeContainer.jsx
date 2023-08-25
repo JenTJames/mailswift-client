@@ -37,6 +37,10 @@ const EnvelopeContainer = () => {
     getMails();
   }, [getMails]);
 
+  const filterMails = (id) => {
+    setMails((currentMails) => currentMails.filter((mail) => mail.id !== id));
+  };
+
   return (
     <>
       {fetchMailsError?.isError && (
@@ -61,7 +65,7 @@ const EnvelopeContainer = () => {
         {mails.length > 0 ? (
           <div className="flex flex-col">
             {mails.map((mail) => (
-              <Envelope mail={mail} key={mail.id} />
+              <Envelope key={mail.id} mail={mail} filterMails={filterMails} />
             ))}
           </div>
         ) : (

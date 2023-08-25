@@ -5,13 +5,23 @@ import OutlinedFlagTwoToneIcon from "@mui/icons-material/OutlinedFlagTwoTone";
 import { DateTime } from "luxon";
 
 import InboxContext from "../contexts/inbox-context";
+import useHttp from "../hooks/use-http";
 
 import Avatar from "./Avatar";
+import Spinner from "./Spinner";
+import Toast from "./Toast";
 
-const Envelope = ({ mail }) => {
+const Envelope = ({ mail, filterMails }) => {
   const inboxContext = useContext(InboxContext);
   const [isDeleteHovered, setIsDeleteHovered] = useState(false);
   const [isSpamHovered, setIsSpamHovered] = useState(false);
+
+  const {
+    fireRequest: flagMail,
+    isLoading: isFlaggingMail,
+    error: flagMailError,
+    resetError: resetFlagMailError,
+  } = useHttp();
 
   const getDate = (timestamp) => {
     const date = DateTime.fromISO(timestamp);
@@ -37,57 +47,74 @@ const Envelope = ({ mail }) => {
     inboxContext.setMailID(mail.id);
   };
 
-  const markAsSpamHandler = () => {};
-
-  const moveToTrashHandler = () => {};
+  const flagMailHandler = async (flag) => {
+    const response = await flagMail(
+      "PUT",
+      `mails/${mail.id}?flag=${flag}&flagValue=true`
+    );
+    if (!response.isSuccess) return;
+    filterMails(mail.id);
+  };
 
   return (
-    <div
-      className="flex items-center w-full border rounded-md gap-3 hover:bg-emerald-100 cursor-pointer p-2"
-      onClick={loadMailHandler}
-    >
-      <Avatar variant="circle" bgColor="orange" />
-      <div className="flex flex-col w-full">
-        <div className="w-full flex justify-between">
-          <Typography variant="p" className="text-slate-500">
-            {mail.sender.name}
+    <>
+      {isFlaggingMail && <Spinner />}
+      {flagMailError?.isError && (
+        <Toast variant="error" updateError={resetFlagMailError}>
+          {flagMailError?.error}
+        </Toast>
+      )}
+      <div
+        className="flex items-center w-full border rounded-md gap-3 hover:bg-emerald-100 cursor-pointer p-2"
+        onClick={loadMailHandler}
+      >
+        <Avatar variant="circle" bgColor="orange" />
+        <div className="flex flex-col w-full">
+          <div className="w-full flex justify-between">
+            <Typography variant="p" className="text-slate-500">
+              {mail.sender.name}
+            </Typography>
+            <Typography variant="p" className="text-slate-500">
+              {getDate(mail.sentAt)}
+            </Typography>
+          </div>
+          <Typography variant="h6" className="text-slate-700">
+            {mail.subject}
           </Typography>
           <Typography variant="p" className="text-slate-500">
-            {getDate(mail.sentAt)}
+            {truncateText(mail.body)}
           </Typography>
-        </div>
-        <Typography variant="h6" className="text-slate-700">
-          {mail.subject}
-        </Typography>
-        <Typography variant="p" className="text-slate-500">
-          {truncateText(mail.body)}
-        </Typography>
-        <div className="flex justify-end">
-          <Tooltip title="Move to Trash">
-            <IconButton
-              onClick={moveToTrashHandler}
-              onMouseEnter={() => setIsDeleteHovered(true)}
-              onMouseLeave={() => setIsDeleteHovered(false)}
-            >
-              <DeleteOutlineRoundedIcon
-                color={isDeleteHovered ? "error" : "disabled"}
-              />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Mark as Spam">
-            <IconButton
-              onClick={markAsSpamHandler}
-              onMouseEnter={() => setIsSpamHovered(true)}
-              onMouseLeave={() => setIsSpamHovered(false)}
-            >
-              <OutlinedFlagTwoToneIcon
-                color={isSpamHovered ? "warning" : "disabled"}
-              />
-            </IconButton>
-          </Tooltip>
+          <div className="flex justify-end">
+            <Tooltip title="Move to Trash">
+              <IconButton
+                onClick={() => {
+                  flagMailHandler("trash");
+                }}
+                onMouseEnter={() => setIsDeleteHovered(true)}
+                onMouseLeave={() => setIsDeleteHovered(false)}
+              >
+                <DeleteOutlineRoundedIcon
+                  color={isDeleteHovered ? "error" : "disabled"}
+                />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Mark as Spam">
+              <IconButton
+                onClick={() => {
+                  flagMailHandler("spam");
+                }}
+                onMouseEnter={() => setIsSpamHovered(true)}
+                onMouseLeave={() => setIsSpamHovered(false)}
+              >
+                <OutlinedFlagTwoToneIcon
+                  color={isSpamHovered ? "warning" : "disabled"}
+                />
+              </IconButton>
+            </Tooltip>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
