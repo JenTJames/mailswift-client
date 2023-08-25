@@ -27,6 +27,7 @@ const InboxPage = () => {
       setMail(mail.data);
     };
     if (mailId) getMail();
+    else setMail(null);
   }, [inboxContext.mailID, fetchMail]);
 
   if (!mail)

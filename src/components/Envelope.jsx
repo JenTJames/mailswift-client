@@ -54,6 +54,7 @@ const Envelope = ({ mail, filterMails }) => {
     );
     if (!response.isSuccess) return;
     filterMails(mail.id);
+    inboxContext.setMailID(0);
   };
 
   return (
