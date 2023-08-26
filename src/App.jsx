@@ -24,6 +24,10 @@ function App() {
             path="/inbox"
             element={<Restricted component={<InboxPage />} />}
           />
+          <Route
+            path="/sent-mails"
+            element={<Restricted component={<InboxPage />} />}
+          />
 
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="*" element={<Navigate to="/login" replace />} />

@@ -77,7 +77,7 @@ const Envelope = ({ mail, filterMails, markMailAsRead }) => {
         <div className="flex flex-col w-full">
           <div className="w-full flex justify-between">
             <Typography variant="p" className="text-slate-500">
-              {mail.sender.name}
+              {mail.sender.id ? mail.sender.name : mail.receiver.name}
             </Typography>
             <Typography variant="p" className="text-slate-500">
               {getDate(mail.sentAt)}
