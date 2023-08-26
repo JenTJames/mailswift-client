@@ -33,6 +33,10 @@ function App() {
             path="/spam"
             element={<Restricted component={<InboxPage />} />}
           />
+          <Route
+            path="/trash"
+            element={<Restricted component={<InboxPage />} />}
+          />
 
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
