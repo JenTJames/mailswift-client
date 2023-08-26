@@ -1,7 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { IconButton, Tooltip, Typography } from "@mui/material";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import OutlinedFlagTwoToneIcon from "@mui/icons-material/OutlinedFlagTwoTone";
+import RestoreRoundedIcon from "@mui/icons-material/RestoreRounded";
 import { DateTime } from "luxon";
 
 import InboxContext from "../contexts/inbox-context";
@@ -12,9 +14,17 @@ import Spinner from "./Spinner";
 import Toast from "./Toast";
 
 const Envelope = ({ mail, filterMails, markMailAsRead }) => {
-  const inboxContext = useContext(InboxContext);
   const [isDeleteHovered, setIsDeleteHovered] = useState(false);
   const [isSpamHovered, setIsSpamHovered] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState("");
+
+  const inboxContext = useContext(InboxContext);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setCurrentRoute(location.pathname.split("/")[1]);
+  }, [location]);
 
   const {
     fireRequest: flagMail,
@@ -48,14 +58,18 @@ const Envelope = ({ mail, filterMails, markMailAsRead }) => {
     if (mail.isRead === false) markMailAsRead(mail.id);
   };
 
-  const flagMailHandler = async (flag) => {
+  const flagMailHandler = async (flag, value = true) => {
     const response = await flagMail(
       "PUT",
-      `mails/${mail.id}?flag=${flag}&flagValue=true`
+      `mails/${mail.id}?flag=${flag}&flagValue=${value}`
     );
     if (!response.isSuccess) return;
     filterMails(mail.id);
     inboxContext.setMailID(0);
+  };
+
+  const deleteMailHandler = () => {
+    console.log("Deleting Mail...");
   };
 
   return (
@@ -89,34 +103,62 @@ const Envelope = ({ mail, filterMails, markMailAsRead }) => {
           <Typography variant="p" className="text-slate-500">
             {truncateText(mail.body)}
           </Typography>
-          <div className="flex justify-end">
-            <Tooltip title="Move to Trash">
-              <IconButton
-                onClick={() => {
-                  flagMailHandler("trash");
-                }}
-                onMouseEnter={() => setIsDeleteHovered(true)}
-                onMouseLeave={() => setIsDeleteHovered(false)}
+          {currentRoute !== "sent-mails" && (
+            <div className="flex justify-end">
+              <Tooltip
+                title={currentRoute === "trash" ? "Delete" : "Move to Trash"}
               >
-                <DeleteOutlineRoundedIcon
-                  color={isDeleteHovered ? "error" : "disabled"}
-                />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Mark as Spam">
-              <IconButton
-                onClick={() => {
-                  flagMailHandler("spam");
-                }}
-                onMouseEnter={() => setIsSpamHovered(true)}
-                onMouseLeave={() => setIsSpamHovered(false)}
-              >
-                <OutlinedFlagTwoToneIcon
-                  color={isSpamHovered ? "warning" : "disabled"}
-                />
-              </IconButton>
-            </Tooltip>
-          </div>
+                <IconButton
+                  onClick={() => {
+                    currentRoute === "trash"
+                      ? deleteMailHandler()
+                      : flagMailHandler("trash");
+                  }}
+                  onMouseEnter={() => setIsDeleteHovered(true)}
+                  onMouseLeave={() => setIsDeleteHovered(false)}
+                >
+                  <DeleteOutlineRoundedIcon
+                    color={isDeleteHovered ? "error" : "disabled"}
+                  />
+                </IconButton>
+              </Tooltip>
+              {currentRoute !== "trash" && (
+                <Tooltip
+                  title={currentRoute === "spam" ? "Unspam" : "Mark as Spam"}
+                >
+                  <IconButton
+                    onClick={() => {
+                      flagMailHandler(
+                        "spam",
+                        currentRoute === "spam" ? false : true
+                      );
+                    }}
+                    onMouseEnter={() => setIsSpamHovered(true)}
+                    onMouseLeave={() => setIsSpamHovered(false)}
+                  >
+                    <OutlinedFlagTwoToneIcon
+                      color={isSpamHovered ? "warning" : "disabled"}
+                    />
+                  </IconButton>
+                </Tooltip>
+              )}
+              {currentRoute === "trash" && (
+                <Tooltip title="Restore">
+                  <IconButton
+                    onClick={() => {
+                      flagMailHandler("trash", false);
+                    }}
+                    onMouseEnter={() => setIsSpamHovered(true)}
+                    onMouseLeave={() => setIsSpamHovered(false)}
+                  >
+                    <RestoreRoundedIcon
+                      color={isSpamHovered ? "success" : "disabled"}
+                    />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>
