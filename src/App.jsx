@@ -20,12 +20,17 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
           <Route
             path="/inbox"
             element={<Restricted component={<InboxPage />} />}
           />
           <Route
             path="/sent-mails"
+            element={<Restricted component={<InboxPage />} />}
+          />
+          <Route
+            path="/spam"
             element={<Restricted component={<InboxPage />} />}
           />
 
