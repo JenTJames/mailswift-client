@@ -12,6 +12,7 @@ import { Typography } from "@mui/material";
 
 const EnvelopeContainer = () => {
   const [mails, setMails] = useState([]);
+  const [totalUnread, setTotalUnread] = useState(0);
 
   const location = useLocation();
 
@@ -30,6 +31,9 @@ const EnvelopeContainer = () => {
       "mails/" + location.pathname.split("/")[1] + "/users/" + id;
     const response = await fetchMails("GET", endpoint);
     if (!response) return;
+    setTotalUnread(
+      response.data.filter((mail) => mail.isRead === false).length
+    );
     setMails(response.data);
   }, [location, fetchMails]);
 
@@ -39,6 +43,17 @@ const EnvelopeContainer = () => {
 
   const filterMails = (id) => {
     setMails((currentMails) => currentMails.filter((mail) => mail.id !== id));
+  };
+
+  const markMailAsRead = (id) => {
+    setMails((currentMails) => {
+      const tempMails = [...currentMails];
+      const targetMailIndex = tempMails.findIndex((mail) => mail.id === id);
+      if (tempMails[targetMailIndex].isRead === true) return currentMails;
+      tempMails[targetMailIndex].isRead = true;
+      return tempMails;
+    });
+    setTotalUnread((currentUnread) => --currentUnread);
   };
 
   return (
@@ -51,7 +66,7 @@ const EnvelopeContainer = () => {
       <div className="w-6/12 border h-full flex flex-col gap-3 p-5">
         <EnvelopeContainerDetails
           totalMessages={mails.length}
-          totalUnread={mails.length}
+          totalUnread={totalUnread}
           refreshInbox={getMails}
           animateReloadIcon={isFetchingMails}
         />
@@ -65,7 +80,12 @@ const EnvelopeContainer = () => {
         {mails.length > 0 ? (
           <div className="flex flex-col">
             {mails.map((mail) => (
-              <Envelope key={mail.id} mail={mail} filterMails={filterMails} />
+              <Envelope
+                key={mail.id}
+                mail={mail}
+                filterMails={filterMails}
+                markMailAsRead={markMailAsRead}
+              />
             ))}
           </div>
         ) : (

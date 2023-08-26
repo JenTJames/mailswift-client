@@ -11,7 +11,7 @@ import Avatar from "./Avatar";
 import Spinner from "./Spinner";
 import Toast from "./Toast";
 
-const Envelope = ({ mail, filterMails }) => {
+const Envelope = ({ mail, filterMails, markMailAsRead }) => {
   const inboxContext = useContext(InboxContext);
   const [isDeleteHovered, setIsDeleteHovered] = useState(false);
   const [isSpamHovered, setIsSpamHovered] = useState(false);
@@ -45,6 +45,7 @@ const Envelope = ({ mail, filterMails }) => {
 
   const loadMailHandler = () => {
     inboxContext.setMailID(mail.id);
+    if (mail.isRead === false) markMailAsRead(mail.id);
   };
 
   const flagMailHandler = async (flag) => {
@@ -66,6 +67,9 @@ const Envelope = ({ mail, filterMails }) => {
         </Toast>
       )}
       <div
+        style={{
+          borderLeft: !mail.isRead ? "5px solid #22C55E" : "",
+        }}
         className="flex items-center w-full border rounded-md gap-3 hover:bg-emerald-100 cursor-pointer p-2"
         onClick={loadMailHandler}
       >
