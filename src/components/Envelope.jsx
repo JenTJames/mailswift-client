@@ -33,6 +33,13 @@ const Envelope = ({ mail, filterMails, markMailAsRead }) => {
     resetError: resetFlagMailError,
   } = useHttp();
 
+  const {
+    fireRequest: deleteMail,
+    isLoading: isDeletingMail,
+    error: deleteMailError,
+    resetError: resetDeleteMailError,
+  } = useHttp();
+
   const getDate = (timestamp) => {
     const date = DateTime.fromISO(timestamp);
     const today = DateTime.local().startOf("day");
@@ -68,16 +75,24 @@ const Envelope = ({ mail, filterMails, markMailAsRead }) => {
     inboxContext.setMailID(0);
   };
 
-  const deleteMailHandler = () => {
-    console.log("Deleting Mail...");
+  const deleteMailHandler = async (event) => {
+    event.stopPropagation();
+    const response = await deleteMail("DELETE", "mails/" + mail.id);
+    if (!response || !response.isSuccess) return;
+    filterMails(mail.id);
   };
 
   return (
     <>
-      {isFlaggingMail && <Spinner />}
+      {(isFlaggingMail || isDeletingMail) && <Spinner />}
       {flagMailError?.isError && (
         <Toast variant="error" updateError={resetFlagMailError}>
           {flagMailError?.error}
+        </Toast>
+      )}
+      {deleteMailError?.isError && (
+        <Toast variant="error" updateError={resetDeleteMailError}>
+          {deleteMailError?.error}
         </Toast>
       )}
       <div
@@ -109,9 +124,9 @@ const Envelope = ({ mail, filterMails, markMailAsRead }) => {
                 title={currentRoute === "trash" ? "Delete" : "Move to Trash"}
               >
                 <IconButton
-                  onClick={() => {
+                  onClick={(event) => {
                     currentRoute === "trash"
-                      ? deleteMailHandler()
+                      ? deleteMailHandler(event)
                       : flagMailHandler("trash");
                   }}
                   onMouseEnter={() => setIsDeleteHovered(true)}
